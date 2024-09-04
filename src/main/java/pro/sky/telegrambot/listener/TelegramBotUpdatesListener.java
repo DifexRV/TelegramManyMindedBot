@@ -34,7 +34,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private TelegramBot telegramBot;
 
     @Autowired
-    private NotificationTaskRepositories notificationTaskRepositories;
+    private final NotificationTaskRepositories notificationTaskRepositories;
+
+    public TelegramBotUpdatesListener(NotificationTaskRepositories notificationTaskRepositories) {
+        this.notificationTaskRepositories = notificationTaskRepositories;
+    }
 
     @PostConstruct
     public void init() {
@@ -58,10 +62,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         if (matcher.find()) {
                             String dateTimeString = matcher.group(1);
                             String notificationText = matcher.group(3);
+                            logger.info("dateTimeString: {}", dateTimeString);
+                            logger.info("Notification text: {}", notificationText);
 
                             LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
 
                             NotificationTask notificationTask = new NotificationTask(dateTime, notificationText, message.chat().id());
+                            logger.info("NotificationTask: {}", notificationTask);
 
                             notificationTaskRepositories.save(notificationTask);
 

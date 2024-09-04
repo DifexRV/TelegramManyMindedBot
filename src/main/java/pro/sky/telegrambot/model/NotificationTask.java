@@ -26,6 +26,9 @@ public class NotificationTask {
     }
 
     public NotificationTask(LocalDateTime notificationDate, String messageText, long chatId) {
+        this.notificationDate = notificationDate;
+        this.messageText = messageText;
+        this.chatId = chatId;
     }
 
     public long getId() {
