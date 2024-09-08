@@ -84,22 +84,4 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
-
-    @Scheduled(cron = "0 0/1 * * * *")
-    public void sendNotification() {
-        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
-        List<NotificationTask> Tasks = notificationTaskRepositories.findByNotificationDate(now);
-        for (NotificationTask task : Tasks) {
-            try {
-                logger.info("Отправка уведомления: {}", task.getMessageText());
-                telegramBot.execute(new SendMessage(task.getChatId(), task.getMessageText()));
-                logger.info("Уведомление отправлено");
-                notificationTaskRepositories.delete(task);
-            } catch (Exception e) {
-                logger.error("Error processing task: {}", e);
-            }
-        }
-
-    }
-
 }

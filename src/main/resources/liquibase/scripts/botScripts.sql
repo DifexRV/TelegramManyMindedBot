@@ -7,3 +7,6 @@ CREATE TABLE notification_task (
     message_text TEXT,
     notification_date TIMESTAMP WITH TIME ZONE
 )
+
+-- changeset rvoroshnin:2
+ALTER TABLE notification_task DROP COLUMN date_time;
